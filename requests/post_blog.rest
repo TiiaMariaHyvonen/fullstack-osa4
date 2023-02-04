@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs/
 Content-Type: application/json
 
 {
-    "title": "Best recipes",
-    "author": "Kaino Vieno",
-    "url": "recipe_ideas.fi",
-    "likes": "384"
+    "title": "Journal tips",
+    "author": "Iines Ankka",
+    "url": "my-dear-diary.com/cleaning",
+    "likes": "67"
 }
