@@ -1,15 +1,15 @@
 const blogRouter = require('express').Router()
 const Blog = require('../models/blogs')
-const logger = require('../utils/logger')
+//const logger = require('../utils/logger')
 
 blogRouter.get('/', (request, response) => {
-    Blog
-      .find({})
-      .then(blogs => {
-        response.json(blogs)
-      })
-  })
-  
+  Blog
+    .find({})
+    .then(blogs => {
+      response.json(blogs)
+    })
+})
+
 blogRouter.post('/', (request, response) => {
   const blog = new Blog(request.body)
   blog
