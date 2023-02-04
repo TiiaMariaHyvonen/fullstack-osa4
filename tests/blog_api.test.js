@@ -52,6 +52,35 @@ test('returned blogs have field id', async () => {
 })
 
 
+test('a valid blog can be added', async () => {
+  const newBlog = {
+    title: 'First class tests',
+    author: 'Robert C. Martin',
+    url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
+    likes: 10,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+
+  const response = await api.get('/api/blogs')
+
+  const urls = response.body.map(r => r.url)
+
+  expect(response.body).toHaveLength(initialBlogs.length + 1)
+  expect(urls).toContain(
+    'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll'
+  )
+})
+
+
+
+
+
+
+
 
 afterAll(async () => {
   await mongoose.connection.close()
