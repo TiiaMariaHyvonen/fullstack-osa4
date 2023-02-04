@@ -31,10 +31,37 @@ const favoriteBlog = (blogs) => {
     })
 }
 
+const mostBlogs = (blogs) => {
+    if (blogs.length === 0) { return {} }
+
+    const authors = blogs.map(blog => blog.author)
+    const author_occurances = {}
+
+    for (author of authors) {
+        if (!author_occurances.hasOwnProperty(author)){
+            author_occurances[author] = 1
+        } else {
+            author_occurances[author] = author_occurances[author] + 1 
+        }
+    }
+
+    const values = Object.values(author_occurances)
+    const value = Math.max(...values)
+    const most_author = Object.keys(author_occurances).find(key => author_occurances[key] === value)
+    
+    return ({
+        author: most_author,
+        blogs: value
+    })
+
+
+}
+
 
 
 module.exports = {
     dummy,
     totalLikes,
-    favoriteBlog
+    favoriteBlog,
+    mostBlogs
 }

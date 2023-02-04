@@ -138,5 +138,28 @@ describe('total likes', () => {
           author: "Michael Chan",
           likes: 12,
         })
-      })
+    })
+
   })
+
+
+
+
+  describe('most blogs', () => {
+    test('of empty list returns empty object', () => {
+      const result = listHelper.mostBlogs(emptyList)
+      expect(result).toEqual({})
+    })
+
+    test('most blogs out of big list', () => {
+        const result = listHelper.mostBlogs(blogs)
+        expect(result).toEqual({
+          author: "Robert C. Martin",
+          blogs: 3
+        })
+      })
+
+  })
+
+
+  
