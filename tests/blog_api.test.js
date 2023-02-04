@@ -34,6 +34,25 @@ test('right number of blogs in JSON format', async () => {
   expect(response.body).toHaveLength(initialBlogs.length)
 })
 
+test('returned blogs have field id', async () => {
+  const response = await api.get('/api/blogs')
+
+  const ids = response.body.map(blog => blog.id)
+  const filtered = ids.filter(e => e) // filter away all undefined ids
+  const fetchIds = (filtered) => {
+    // there can not be less defined ids than blogs in database
+    if (filtered.length < initialBlogs.length) {
+      return undefined
+    } else {
+      return filtered
+    }
+  }
+
+  expect(fetchIds(filtered)).toBeDefined()
+})
+
+
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
