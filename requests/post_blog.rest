@@ -1,10 +1,10 @@
 POST http://localhost:3003/api/blogs/
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYzZTdkOWYzZjAzMjU4OTlkZTRiMWY0OSIsImlhdCI6MTY3NjE0ODQxN30.iJfMiK6hvLru1i2yHzTzx_aD_HE8HI-0TOD_NaGJv_Y
 
 {
-    "title": "Journal tips",
+    "title": "Journal tips 3.0",
     "author": "Iines Ankka",
-    "url": "my-dear-diary.com/cleaning",
-    "likes": "67",
-    "userId": "63e7d9f3f0325899de4b1f49"
+    "url": "my-dear-diary.com/writing",
+    "likes": "69"
 }
