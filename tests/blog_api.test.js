@@ -10,6 +10,10 @@ const User = require('../models/user')
 beforeEach(async () => {
   await Blog.deleteMany({})
   await Blog.insertMany(helper.initialBlogs)
+  await User.deleteMany({})
+  const passwordHash = await bcrypt.hash('sekret', 10)
+  const user = new User({ username: 'root', passwordHash })
+  await user.save()
 })
 
 
@@ -45,11 +49,13 @@ describe('Test retrieving all blogs', () => {
 describe('Test adding blogs', () => {
 //4.10
   test('a valid blog can be added', async () => {
+    const usersAtStart = await helper.usersInDb()
     const newBlog = {
       title: 'First class tests',
       author: 'Robert C. Martin',
       url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
       likes: 10,
+      userId: usersAtStart[0].id
     }
 
     await api
@@ -68,10 +74,12 @@ describe('Test adding blogs', () => {
 
   // 4.11*
   test('if likes is not defined it will get value 0', async () => {
+    const usersAtStart = await helper.usersInDb()
     const newBlog = {
       title: 'Second class tests',
       author: 'Robert C. Martin',
       url: 'http://blog.cleancoder.com/uncle-bob/2018/05/05/TestDefinitions.htmll',
+      userId: usersAtStart[0].id
     }
 
     const response  = await api.post('/api/blogs').send(newBlog)
@@ -81,10 +89,12 @@ describe('Test adding blogs', () => {
 
   // 4.12* 1/2
   test('if url is not defined give status code 400', async () => {
+    const usersAtStart = await helper.usersInDb()
     const newBlog = {
       title: 'Third class tests',
       author: 'Robert C. Martin',
-      likes: 5
+      likes: 5,
+      userId: usersAtStart[0].id
     }
 
     await api
@@ -96,10 +106,12 @@ describe('Test adding blogs', () => {
 
   // 4.12* 2/2
   test('if title is not defined give status code 400', async () => {
+    const usersAtStart = await helper.usersInDb()
     const newBlog = {
       author: 'Robert C. Martin',
       url: 'http://blog.cleancoder.com/uncle-bob/2018/05/05/TestDefinitions.htmll',
-      likes: 5
+      likes: 5,
+      userId: usersAtStart[0].id
     }
 
     await api
@@ -153,14 +165,6 @@ test('likes in blog can be updated', async () => {
 
 
 describe('when there is initially one user at db', () => {
-  beforeEach(async () => {
-    await User.deleteMany({})
-
-    const passwordHash = await bcrypt.hash('sekret', 10)
-    const user = new User({ username: 'root', passwordHash })
-
-    await user.save()
-  })
 
   test('creation succeeds with a fresh username', async () => {
     const usersAtStart = await helper.usersInDb()

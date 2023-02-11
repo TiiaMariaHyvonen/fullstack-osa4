@@ -11,10 +11,9 @@ blogRouter.get('/', async (request, response) => {
 blogRouter.post('/', async (request, response) => {
   const blog = new Blog(request.body)
   console.log(blog)
-
   const user = await User.findById(request.body.userId)
+  console.log(user)
   blog.user = user._id
-
   if (blog.title === undefined || blog.url === undefined) {
     return response.status(400).json({ error: 'content missing' })
   }
