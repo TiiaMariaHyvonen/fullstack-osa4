@@ -5,5 +5,6 @@ Content-Type: application/json
     "title": "Journal tips",
     "author": "Iines Ankka",
     "url": "my-dear-diary.com/cleaning",
-    "likes": "67"
+    "likes": "67",
+    "userId": "63e7d9f3f0325899de4b1f49"
 }
