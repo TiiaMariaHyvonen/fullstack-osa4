@@ -3,9 +3,15 @@ const logger = require('../utils/logger')
 const config = require('../utils/config')
 
 const blogSchema = mongoose.Schema({
-  title: String,
+  title: {
+    type: String,
+    required: true
+  },
   author: String,
-  url: String,
+  url: {
+    type: String,
+    required: true
+  },
   likes: Number,
   user: {
     type: mongoose.Schema.Types.ObjectId,

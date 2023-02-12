@@ -1,6 +1,5 @@
 const blogRouter = require('express').Router()
 const Blog = require('../models/blogs')
-const jwt = require('jsonwebtoken')
 
 
 blogRouter.get('/', async (request, response) => {
@@ -19,19 +18,14 @@ blogRouter.post('/', async (request, response) => {
   const user = request.user
   blog.user = user._id
 
-  if (blog.title === undefined || blog.url === undefined) {
-    return response.status(400).json({ error: 'content missing' })
-  }
-  else {
-    blog.likes = blog.likes || 0
-    const savedBlog = await blog.save()
-    user.blogs = user.blogs.concat(savedBlog._id)
-    await user.save()
+  blog.likes = blog.likes || 0
+  const savedBlog = await blog.save()
+  user.blogs = user.blogs.concat(savedBlog._id)
+  await user.save()
 
-    response.status(201).json(savedBlog)
-  }
+  response.status(201).json(savedBlog)
+
 })
-
 
 
 
@@ -51,13 +45,22 @@ blogRouter.delete('/:id', async (request, response) => {
 
 
 blogRouter.put('/:id', async (request, response) => {
+
+  if (!request.user.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+  const blog = await Blog.findById(request.params.id)
+
+  if (blog.user.toString() !== request.user.id) {
+    return response.status(401).json({ error: 'wrong token' })
+  }
   const body = request.body
 
-  const blog = {
+  const blog_likes = {
     likes: body.likes,
   }
 
-  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog_likes, { new: true })
   response.json(updatedBlog)
 })
 
